@@ -24,3 +24,7 @@ logs
 !.env.example
 
 /prisma/generated
+
+.claude
+.windsurf
+.agents
