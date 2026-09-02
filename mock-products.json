@@ -1,0 +1,302 @@
+[
+  {
+    "sku": "MOCK-CYS-001",
+    "name": "4K Cystoscopes",
+    "specialty": "Urology",
+    "category": "Cystoscopy",
+    "description": "Dive into the details with the new 4K Cystoscopes - for a better view and a brighter image.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/1029156.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-CYS-002",
+    "name": "Full HD Cystoscopes",
+    "specialty": "Urology",
+    "category": "Cystoscopy",
+    "description": "The rigid endoscope enables diagnosis of the bladder and is available in various diameters and angulations as well as the adapted sheaths to match. Various access systems enable variable insertion of instruments into the bladder.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/12-1.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-CYS-003",
+    "name": "Cysto-urethroscope shaft, 17 Charr.",
+    "specialty": "Urology",
+    "category": "Cystoscopy",
+    "description": "The rigid endoscope enables diagnosis of the bladder and is available in various diameters and angulations as well as the adapted sheaths to match. Various access systems enable variable insertion of instruments into the bladder.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/13.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-CYS-004",
+    "name": "Flexible instruments",
+    "specialty": "Urology",
+    "category": "Cystoscopy",
+    "description": "Flexible and semi-rigid instruments between 3 and 7 Fr. form the basis for cystoscopy procedures.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/14.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-CYS-005",
+    "name": "Toomey Bladder Syringe",
+    "specialty": "Urology",
+    "category": "Cystoscopy",
+    "description": "RZ Toomey Syringe is a multi-purpose glas syringe for cystoscopes and resectoscopes.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/1028838.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-TRA-001",
+    "name": "Monopolar Resectoscope System",
+    "specialty": "Urology",
+    "category": "Transurethral Resection",
+    "description": "Monopolar resection in a salt-free solution involves the use of different electrodes for cutting and coagulation. The method has been established for decades and is safe for use. Discover our system in 18.5 Fr., 22 Fr. and 26 Fr. The mobile working element with titanium handle is available in a passive and active version. A variety of different electrodes are available for monopolar resection.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/15hl-1.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-TRA-002",
+    "name": "Monopolar loop electrode",
+    "specialty": "Urology",
+    "category": "Transurethral Resection",
+    "description": "Monopolar resection in a salt-free solution involves the use of different electrodes for cutting and coagulation. The method has been established for decades and is safe for use. Discover our system in 18.5 Fr., 22 Fr. and 26 Fr. The mobile working element with titanium handle is available in a passive and active version. A variety of different electrodes are available for monopolar resection.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/17.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-TRA-003",
+    "name": "26 Charr. Bipolar resectoscope (HYBRID)",
+    "specialty": "Urology",
+    "category": "Transurethral Resection",
+    "description": "Bipolar prostate resection is the modern alternative to monopolar TURP. These supply and discharge electrodes do not discharge the flow of current through the patient and use saline as irrigation fluid. The bipolar flow of current is what creates the yellow plasma bubble, which enables targeted cuts to be made. With the RZ hybrid system, the user is at liberty to decide whether to work using the bipolar or conventional monopolar method for each operation. The RZ resectoscopes with manual titanium elements are available as passive and active versions and are best operated with the RZ HF units, but are also compatible with HF units from various manufacturers.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/16hl.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-TRA-004",
+    "name": "Hybrid touch electrode",
+    "specialty": "Urology",
+    "category": "Transurethral Resection",
+    "description": "Bipolar prostate resection is the modern alternative to monopolar TURP. These supply and discharge electrodes do not discharge the flow of current through the patient and use saline as irrigation fluid. The bipolar flow of current is what creates the yellow plasma bubble, which enables targeted cuts to be made. With the RZ hybrid system, the user is at liberty to decide whether to work using the bipolar or conventional monopolar method for each operation. The RZ resectoscopes with manual titanium elements are available as passive and active versions and are best operated with the RZ HF units, but are also compatible with HF units from various manufacturers.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/18.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-001",
+    "name": "MiLEP Highflow Tips",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "Introduced at EAU 2026 and developed in collaboration with Dr. Felipe C. A. de Figueiredo, the MiLEP High-Flow/Metal Sheath is the latest update for MiLEP 22 Charr. and 18.5 Charr. enucleoscopes. The new metallic inner sheath is designed for higher outflow and a clearer endoscopic field during laser enucleation - particularly during initial apical dissection and early release. These versions feature a metallic distal tip for increased robustness in case of unintended laser contact. A standard-flow metal option is also available. Better outflow for improved washout and better visibility during laser resection More stable continuous flow, supporting controlled dissection in critical steps Robust metallic distal tip (instead of ceramic) for increased durability in case of unintended laser contact Available as High-Flow (22 Charr. or 18.5 Charr.) plus Standard-Flow Metal (22 Charr.)",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/titel_highflow.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-002",
+    "name": "22 Charr. Laser resectoscope system",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The SlimHoLEP with an outer diameter of 22 Fr. offers the smallest resectoscope that enables resection, morcellation and haemostasis with a single shaft. This minimally invasive laser enucleation (MILEP) is the miniaturisation of the previous standard with the same incision and image quality. It protects the ureter and minimises the risk of complications, strictures or incontinence. Watch the Video of the complete surgical procedure",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/20hl.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-003",
+    "name": "22 Charr. Laser resectoscope system with Morcescope",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The SlimHoLEP with an outer diameter of 22 Fr. offers the smallest resectoscope that enables resection, morcellation and haemostasis with a single shaft. This minimally invasive laser enucleation (MILEP) is the miniaturisation of the previous standard with the same incision and image quality. It protects the ureter and minimises the risk of complications, strictures or incontinence. Watch the Video of the complete surgical procedure",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/23hl.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-004",
+    "name": "MiLEP Siebkorb",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The SlimHoLEP with an outer diameter of 22 Fr. offers the smallest resectoscope that enables resection, morcellation and haemostasis with a single shaft. This minimally invasive laser enucleation (MILEP) is the miniaturisation of the previous standard with the same incision and image quality. It protects the ureter and minimises the risk of complications, strictures or incontinence. Watch the Video of the complete surgical procedure",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/milep_tray.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-005",
+    "name": "18.5 Charr. Laser resectoscope",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The 18.5 Fr. resectoscope is the smallest resectoscope available for laser prostate resection. It generates minimal urethral trauma and, combined with the morcescope, is ideal for small prostatic hyperplasia (> 80 g) in narrow anatomies.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/21hl.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-006",
+    "name": "18.5 Charr. Laser resectoscope with Morcescope",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The 18.5 Fr. resectoscope is the smallest resectoscope available for laser prostate resection. It generates minimal urethral trauma and, combined with the morcescope, is ideal for small prostatic hyperplasia (> 80 g) in narrow anatomies.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/24hl.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-007",
+    "name": "26 Charr. Laser resectoscope",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The 26 Fr. system is the proven standard in laser enucleation.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/22.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAS-008",
+    "name": "Laser resectoscope shaft and laser guide rods",
+    "specialty": "Urology",
+    "category": "Laser Enucleation",
+    "description": "The 26 Fr. system is the proven standard in laser enucleation.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/25.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-001",
+    "name": "RZ Nephroscope with parallel view, 6°",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Percutaneous nephrolithotomy is an established method for extracting large kidney stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/26.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-002",
+    "name": "Nephroscope instruments and accessories",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Percutaneous nephrolithotomy is an established method for extracting large kidney stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/28.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-003",
+    "name": "RZ Compact Nephroskop Set",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "The mini PCNL describes percutaneous access with instruments and optical systems between 12 and 20 Fr. The minimally invasive approach used by PCNL is also effective with larger stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/rz-medizintechnik-steinbehandlung-miniPCNL-2.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-004",
+    "name": "Rz Mini PCNL Set",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "The mini PCNL describes percutaneous access with instruments and optical systems between 12 and 20 Fr. The minimally invasive approach used by PCNL is also effective with larger stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/1008407.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-005",
+    "name": "URS mit Dichtungskappen",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Our ureterorenoscope and instruments can be used for the transurethral treatment of stones in the urinary system and the diagnosis of changes in the ureteral or renal pelvis.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/PAKI4367.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-006",
+    "name": "URS mit eingeführtem Instrument",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Our ureterorenoscope and instruments can be used for the transurethral treatment of stones in the urinary system and the diagnosis of changes in the ureteral or renal pelvis.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/Untitled-1-1.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-007",
+    "name": "Mauermayer stone punch with shaft and optics",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Various instruments and procedures complete our range for the complete treatment of kidney and ureteral stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/30-2.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-STO-008",
+    "name": "Hamada bladder stone lithotripter",
+    "specialty": "Urology",
+    "category": "Stone Management",
+    "description": "Various instruments and procedures complete our range for the complete treatment of kidney and ureteral stones.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/31.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAP-001",
+    "name": "Klein® Robotic Bulldog Clamp",
+    "specialty": "Urology",
+    "category": "Laparoscopic Urology",
+    "description": "Safe, precise, atraumatic A special laparoscopic robotic bulldog clamp – for use with ProGrasp®Atraumatic vascular occlusion thanks to DeBakey serration and even pressure.Made of high-quality AISI 420 steel: easy processing and cleaning. Specially designed for use with robotic surgical systems Placement by a single surgeon using the Pro-Grasp® instrument Atraumatic DeBakey clamp design Insertion through a 12.5 mm cannula Suture hole for easy removal",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/endo_robo_anlege-2.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAP-002",
+    "name": "Klein® Endoscopic Bulldog Clamp, Atraumatic",
+    "specialty": "Urology",
+    "category": "Laparoscopic Urology",
+    "description": "Various high-quality clamps for vascular and intestinal surgery Secure hold of occluded tissue structures Occlusion of vessels and other tissue without additional port Atraumatic cross-clamping of the colon DeBakey serration Straight and curved jaw shape, 17–60 mm jaw length",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/endo_anlege.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-LAP-003",
+    "name": "Titanium Bulldog Clamp",
+    "specialty": "Urology",
+    "category": "Laparoscopic Urology",
+    "description": "Colour coding for arteries (blue) and veins (purple) Lightweight Non-magnetic High corrosion resistance Atraumatic DeBakey serration",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/endo_anlege_b.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-PAE-001",
+    "name": "Paediatric Ureterorenoscopes",
+    "specialty": "Urology",
+    "category": "Paediatric Urology",
+    "description": "The extremely thin and atraumatically manufactured ureterorenoscopes with fibre optics are suitable for use with instruments up to 3 Fr. We offer three sizes with diameters between 7.5 and 4.5 Fr. at the distal tip and matching optical systems and instruments for infants to adolescents.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/pediatric_b.jpg",
+    "specifications": {},
+    "isAvailable": true
+  },
+  {
+    "sku": "MOCK-PAE-002",
+    "name": "Paediatric Ureterorenoscopes",
+    "specialty": "Urology",
+    "category": "Paediatric Urology",
+    "description": "The extremely thin and atraumatically manufactured ureterorenoscopes with fibre optics are suitable for use with instruments up to 3 Fr. We offer three sizes with diameters between 7.5 and 4.5 Fr. at the distal tip and matching optical systems and instruments for infants to adolescents.",
+    "imageUrl": "https://rz-medizintechnik.com/wp-content/uploads/pediatric_a.jpg",
+    "specifications": {},
+    "isAvailable": true
+  }
+]

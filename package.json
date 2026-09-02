@@ -6,6 +6,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "import:mock-products": "tsx scripts/import-mock-products.ts",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
@@ -21,7 +22,9 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "@types/pg": "^8.23.1",
+    "cheerio": "^1.2.0",
     "prisma": "^7.10.0",
-    "tailwindcss": "^4.3.3"
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.13"
   }
 }
