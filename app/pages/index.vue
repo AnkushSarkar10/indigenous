@@ -45,7 +45,6 @@ const focusAreas = [
                 <path d="M5 12h14M13 6l6 6-6 6" />
               </svg>
             </Button>
-            <Button as="a" href="mailto:hello@indigenous.example" variant="outline" size="lg">Talk to a specialist</Button>
           </div>
           <div class="mt-14 flex gap-9 border-t border-border pt-6 sm:gap-14">
             <div>

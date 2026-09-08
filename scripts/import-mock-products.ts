@@ -3,10 +3,12 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { load } from "cheerio";
+import robotsParser from "robots-parser";
 
 const SOURCE_ORIGIN = "https://rz-medizintechnik.com";
 const DEFAULT_OUTPUT = "mock-products.json";
 const REQUEST_DELAY_MS = 800;
+const IMPORTER_USER_AGENT = "IndigenousMockCatalogImporter/1.0";
 
 const CATEGORY_PAGES = [
   ["Cystoscopy", "/en/product-portfolio/endourology/cystoscopy/"],
@@ -38,7 +40,7 @@ type MockProduct = {
   description: string;
   imageUrl: string;
   specifications: Record<string, never>;
-  isAvailable: true;
+  isAvailable: boolean;
 };
 
 const args = new Set(process.argv.slice(2));
@@ -183,7 +185,7 @@ function createMockProduct(
     description: candidate.description,
     imageUrl: candidate.referenceImageUrl,
     specifications: {},
-    isAvailable: true,
+    isAvailable: sku !== "MOCK-CYS-001",
   };
 }
 
@@ -191,7 +193,7 @@ async function fetchText(url: string) {
   const response = await fetch(url, {
     headers: {
       Accept: "text/html,application/xhtml+xml",
-      "User-Agent": "IndigenousMockCatalogImporter/1.0 (review-only; low-rate)",
+      "User-Agent": `${IMPORTER_USER_AGENT} (review-only; low-rate)`,
     },
     signal: AbortSignal.timeout(20_000),
   });
@@ -205,31 +207,15 @@ async function fetchText(url: string) {
 
 async function assertRobotsAllowsImport() {
   const robotsUrl = new URL("/robots.txt", SOURCE_ORIGIN).toString();
-  const robots = await fetchText(robotsUrl);
-  const relevantLines: string[] = [];
-  let appliesToAllAgents = false;
-
-  for (const rawLine of robots.split(/\r?\n/)) {
-    const line = rawLine.replace(/#.*/, "").trim();
-    if (!line) continue;
-
-    const [field, ...rest] = line.split(":");
-    const value = rest.join(":").trim();
-
-    if (field.toLocaleLowerCase() === "user-agent") {
-      appliesToAllAgents = value === "*";
-    } else if (appliesToAllAgents && field.toLocaleLowerCase() === "disallow") {
-      relevantLines.push(value);
-    }
-  }
-
-  const targetPath = "/en/product-portfolio/endourology/";
-  const blocked = relevantLines.some(
-    (path) => path && (targetPath.startsWith(path) || path.startsWith(targetPath)),
+  const robots = robotsParser(robotsUrl, await fetchText(robotsUrl));
+  const blockedPage = CATEGORY_PAGES.map(([, pathname]) =>
+    new URL(pathname, SOURCE_ORIGIN).toString(),
+  ).find(
+    (pageUrl) => robots.isAllowed(pageUrl, IMPORTER_USER_AGENT) === false,
   );
 
-  if (blocked) {
-    throw new Error(`${robotsUrl} disallows scraping ${targetPath}`);
+  if (blockedPage) {
+    throw new Error(`${robotsUrl} disallows scraping ${blockedPage}`);
   }
 }
 
@@ -262,11 +248,20 @@ async function commitProducts(products: MockProduct[]) {
   const connectionString = process.env.DATABASE_URL;
   if (!connectionString) throw new Error("DATABASE_URL is required with --commit");
 
+  const databaseUrl = new URL(connectionString);
+  const isLoopback = ["localhost", "127.0.0.1", "::1"].includes(databaseUrl.hostname);
+  if (!isLoopback) databaseUrl.searchParams.set("sslmode", "verify-full");
+
   const [{ PrismaPg }, { PrismaClient }] = await Promise.all([
     import("@prisma/adapter-pg"),
     import("../prisma/generated/client.ts"),
   ]);
-  const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString }) });
+  const prisma = new PrismaClient({
+    adapter: new PrismaPg({
+      connectionString: databaseUrl.toString(),
+      connectionTimeoutMillis: 20_000,
+    }),
+  });
 
   try {
     for (const product of products) {
@@ -280,7 +275,7 @@ async function commitProducts(products: MockProduct[]) {
     await prisma.$disconnect();
   }
 
-  console.log(`Upserted ${products.length} available mock products.`);
+  console.log(`Upserted ${products.length} mock products.`);
 }
 
 async function main() {

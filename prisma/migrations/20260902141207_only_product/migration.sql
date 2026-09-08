@@ -1,8 +1,6 @@
 /*
   Warnings:
 
-  - You are about to drop the column `image_url` on the `products` table. All the data in the column will be lost.
-  - You are about to drop the column `is_active` on the `products` table. All the data in the column will be lost.
   - You are about to drop the `order_request_items` table. If the table is not empty, all the data it contains will be lost.
   - You are about to drop the `order_requests` table. If the table is not empty, all the data it contains will be lost.
   - Made the column `category` on table `products` required. This step will fail if there are existing NULL values in that column.
@@ -18,11 +16,9 @@ ALTER TABLE "order_request_items" DROP CONSTRAINT "order_request_items_request_i
 DROP INDEX "products_category_is_active_idx";
 
 -- AlterTable
-ALTER TABLE "products" DROP COLUMN "image_url",
-DROP COLUMN "is_active",
-ADD COLUMN     "image_path" TEXT,
-ADD COLUMN     "is_available" BOOLEAN NOT NULL DEFAULT true,
-ALTER COLUMN "category" SET NOT NULL;
+ALTER TABLE "products" RENAME COLUMN "image_url" TO "image_path";
+ALTER TABLE "products" RENAME COLUMN "is_active" TO "is_available";
+ALTER TABLE "products" ALTER COLUMN "category" SET NOT NULL;
 
 -- DropTable
 DROP TABLE "order_request_items";
