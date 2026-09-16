@@ -5,7 +5,7 @@ import Card from "~/components/ui/card/Card.vue";
 import CardContent from "~/components/ui/card/CardContent.vue";
 
 useSeoMeta({
-  title: "Indigenous Medical Systems",
+  title: "Indigenous",
   description: "Precision endourology instruments designed for confident clinical care.",
 });
 
@@ -20,15 +20,15 @@ const focusAreas = [
   <div class="overflow-hidden">
     <section class="relative border-b border-border">
       <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
-        <div class="absolute -right-32 top-10 size-[34rem] rounded-full bg-emerald-100/70 blur-3xl" />
-        <div class="absolute -left-32 bottom-0 size-80 rounded-full bg-teal-50 blur-3xl" />
+        <div class="absolute -right-32 top-10 size-[34rem] rounded-full bg-sky-100/70 blur-3xl" />
+        <div class="absolute -left-32 bottom-0 size-80 rounded-full bg-sky-50 blur-3xl" />
         <div class="hero-grid absolute inset-0 opacity-45" />
       </div>
 
       <div class="relative mx-auto grid min-h-[calc(100vh-4.5rem)] max-w-7xl items-center gap-16 px-5 py-20 sm:px-8 lg:grid-cols-[1.06fr_.94fr] lg:px-10 lg:py-24">
         <div>
           <Badge variant="outline" class="mb-7 bg-background/80 px-3 py-1.5 backdrop-blur">
-            <span class="mr-2 inline-block size-1.5 rounded-full bg-emerald-500" />
+            <span class="mr-2 inline-block size-1.5 rounded-full bg-sky-500" />
             Engineered for better outcomes
           </Badge>
           <h1 class="max-w-3xl text-5xl font-semibold leading-[0.98] tracking-[-0.055em] text-foreground sm:text-6xl lg:text-7xl">
@@ -59,8 +59,8 @@ const focusAreas = [
         </div>
 
         <div class="relative mx-auto w-full max-w-xl lg:mx-0">
-          <div class="absolute -inset-5 rounded-[2.25rem] border border-emerald-100 bg-white/45 backdrop-blur-sm" />
-          <div class="relative overflow-hidden rounded-[1.75rem] border border-border bg-card p-3 shadow-[0_30px_90px_-45px_rgba(5,80,65,.5)]">
+          <div class="absolute -inset-5 rounded-[2.25rem] border border-sky-100 bg-white/45 backdrop-blur-sm" />
+          <div class="relative overflow-hidden rounded-[1.75rem] border border-border bg-card p-3 shadow-[0_30px_90px_-45px_rgba(14,165,233,.4)]">
             <div class="relative aspect-[4/5] overflow-hidden rounded-[1.2rem] bg-[#e7f2ee]">
               <img
                 src="https://rz-medizintechnik.com/wp-content/uploads/20hl.jpg"
@@ -91,7 +91,7 @@ const focusAreas = [
       </div>
 
       <div class="grid gap-4 md:grid-cols-3">
-        <Card v-for="area in focusAreas" :key="area.label" class="group overflow-hidden shadow-none transition hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg hover:shadow-emerald-950/5">
+        <Card v-for="area in focusAreas" :key="area.label" class="group overflow-hidden shadow-none transition hover:-translate-y-1 hover:border-sky-200 hover:shadow-lg hover:shadow-sky-950/5">
           <CardContent class="p-7">
             <span class="text-xs font-semibold tracking-[0.2em] text-muted-foreground">{{ area.number }}</span>
             <div class="mt-12 flex items-end justify-between gap-5">
@@ -110,8 +110,8 @@ const focusAreas = [
 
 <style scoped>
 .hero-grid {
-  background-image: linear-gradient(to right, rgb(5 80 65 / 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(5 80 65 / 0.05) 1px, transparent 1px);
+  background-image: linear-gradient(to right, rgb(14 165 233 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(14 165 233 / 0.06) 1px, transparent 1px);
   background-size: 48px 48px;
   mask-image: linear-gradient(to bottom, black, transparent 85%);
 }

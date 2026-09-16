@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import "tailwindcss";
 
 @theme inline {
@@ -27,27 +28,29 @@
 :root {
   color-scheme: light;
   --radius: 0.75rem;
-  --background: oklch(0.99 0.004 160);
-  --foreground: oklch(0.22 0.025 174);
+  --background: oklch(0.99 0.004 238);
+  --foreground: oklch(0.22 0.025 240);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.025 174);
+  --card-foreground: oklch(0.22 0.025 240);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.025 174);
-  --primary: oklch(0.42 0.105 172);
-  --primary-foreground: oklch(0.99 0.004 160);
-  --secondary: oklch(0.95 0.02 164);
-  --secondary-foreground: oklch(0.3 0.055 172);
-  --muted: oklch(0.965 0.009 165);
-  --muted-foreground: oklch(0.51 0.025 174);
-  --accent: oklch(0.92 0.045 164);
-  --accent-foreground: oklch(0.3 0.065 172);
-  --border: oklch(0.9 0.016 168);
-  --input: oklch(0.9 0.016 168);
-  --ring: oklch(0.55 0.12 172);
+  --popover-foreground: oklch(0.22 0.025 240);
+  --primary: oklch(0.588 0.158 242);
+  --primary-foreground: oklch(0.99 0.004 238);
+  --secondary: oklch(0.951 0.026 237);
+  --secondary-foreground: oklch(0.39 0.09 240);
+  --muted: oklch(0.97 0.012 237);
+  --muted-foreground: oklch(0.5 0.03 240);
+  --accent: oklch(0.901 0.058 231);
+  --accent-foreground: oklch(0.39 0.09 240);
+  --border: oklch(0.9 0.03 235);
+  --input: oklch(0.9 0.03 235);
+  --ring: oklch(0.685 0.169 237);
 }
 
 * {
   border-color: var(--border);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300 !important;
 }
 
 html {
@@ -60,7 +63,8 @@ body {
   min-width: 320px;
   background: var(--background);
   color: var(--foreground);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
 }
 
 button,
@@ -94,6 +98,6 @@ a {
 }
 
 ::selection {
-  background: oklch(0.82 0.08 166);
-  color: oklch(0.2 0.04 174);
+  background: oklch(0.82 0.08 235);
+  color: oklch(0.2 0.04 240);
 }

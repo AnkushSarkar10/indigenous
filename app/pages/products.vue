@@ -5,7 +5,6 @@ import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import Card from "~/components/ui/card/Card.vue";
 import CardContent from "~/components/ui/card/CardContent.vue";
-import CardFooter from "~/components/ui/card/CardFooter.vue";
 import CardHeader from "~/components/ui/card/CardHeader.vue";
 import CardTitle from "~/components/ui/card/CardTitle.vue";
 import Input from "~/components/ui/input/Input.vue";
@@ -13,7 +12,7 @@ import Select from "~/components/ui/select/Select.vue";
 import type { Product } from "../../types/product";
 
 useSeoMeta({
-  title: "Products · Indigenous Medical Systems",
+  title: "Products · Indigenous",
   description: "Explore our complete catalogue of specialized endourology instruments.",
 });
 
@@ -149,9 +148,9 @@ function clearFilters() {
         <Card
           v-for="product in products"
           :key="product.sku"
-          class="group flex min-w-0 flex-col overflow-hidden shadow-none transition duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-[0_18px_50px_-24px_rgba(5,80,65,.35)]"
+          class="group flex min-w-0 flex-col overflow-hidden shadow-none transition duration-300 hover:-translate-y-1 hover:border-sky-200 hover:shadow-[0_18px_50px_-24px_rgba(14,165,233,.28)]"
         >
-          <div class="relative aspect-[16/10] overflow-hidden border-b border-border bg-gradient-to-br from-slate-50 to-emerald-50/70">
+          <div class="relative aspect-[16/10] overflow-hidden border-b border-border bg-gradient-to-br from-slate-50 to-sky-50/70">
             <img
               v-if="product.imageUrl && !failedImages.has(product.sku)"
               :src="product.imageUrl"
@@ -176,13 +175,6 @@ function clearFilters() {
               {{ product.description || "Precision-engineered for dependable clinical performance." }}
             </p>
           </CardContent>
-          <CardFooter class="justify-between border-t border-border bg-muted/20 !p-4">
-            <span class="truncate font-mono text-[11px] text-muted-foreground">{{ product.sku }}</span>
-            <span :class="product.isAvailable ? 'text-emerald-700' : 'text-muted-foreground'" class="ml-3 inline-flex shrink-0 items-center gap-1.5 text-xs font-medium">
-              <span :class="product.isAvailable ? 'bg-emerald-500' : 'bg-slate-400'" class="size-1.5 rounded-full" />
-              {{ product.isAvailable ? "Available" : "Unavailable" }}
-            </span>
-          </CardFooter>
         </Card>
       </div>
 
