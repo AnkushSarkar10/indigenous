@@ -78,24 +78,6 @@ a {
   transition-duration: 180ms;
 }
 
-.nav-link {
-  border-radius: 9999px;
-  padding: 0.5rem 0.85rem;
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.nav-link:hover {
-  color: var(--foreground);
-}
-
-.nav-link.router-link-active {
-  background: var(--card);
-  color: var(--foreground);
-  box-shadow: 0 1px 3px rgb(15 23 42 / 0.08);
-}
-
 ::selection {
   background: oklch(0.82 0.08 235);
   color: oklch(0.2 0.04 240);

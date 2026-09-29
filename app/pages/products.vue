@@ -9,6 +9,7 @@ import CardHeader from "~/components/ui/card/CardHeader.vue";
 import CardTitle from "~/components/ui/card/CardTitle.vue";
 import Input from "~/components/ui/input/Input.vue";
 import Select from "~/components/ui/select/Select.vue";
+import { SPECIALTIES } from "~/constants/specialties";
 import type { Product } from "../../types/product";
 
 useSeoMeta({
@@ -19,15 +20,16 @@ useSeoMeta({
 const search = ref("");
 const selectedCategory = ref("All products");
 const selectedSpecialty = ref("All specialties");
+const route = useRoute();
 const availableOnly = ref(false);
 const failedImages = ref(new Set<string>());
-const { data, status, error, refresh } = await useFetch<Product[]>("/api/products", {
+const { data, status, error, refresh } = useLazyFetch<Product[]>("/api/products", {
   default: () => [],
 });
 
 const specialties = computed(() => [
   "All specialties",
-  ...new Set(data.value.map((product) => product.specialty)),
+  ...new Set([...SPECIALTIES, ...data.value.map((product) => product.specialty)]),
 ]);
 
 const categories = computed(() => [
@@ -54,6 +56,13 @@ const products = computed(() => {
 watch(selectedSpecialty, () => {
   selectedCategory.value = "All products";
 });
+
+watch(() => route.query.specialty, (value) => {
+  const requestedSpecialty = typeof value === "string" ? value : "All specialties";
+  selectedSpecialty.value = specialties.value.includes(requestedSpecialty)
+    ? requestedSpecialty
+    : "All specialties";
+}, { immediate: true });
 
 function markImageFailed(sku: string) {
   failedImages.value = new Set(failedImages.value).add(sku);
