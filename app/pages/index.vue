@@ -78,7 +78,7 @@ const focusAreas = [
       </div>
     </section>
 
-    <section class="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
+    <section id="about" class="mx-auto scroll-mt-24 max-w-7xl px-5 py-20 sm:px-8 lg:px-10 lg:py-28">
       <div class="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Areas of focus</p>
