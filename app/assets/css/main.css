@@ -1,1 +1,102 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&display=swap");
 @import "tailwindcss";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  color-scheme: light;
+  --radius: 0.75rem;
+  --background: oklch(0.99 0.004 238);
+  --foreground: oklch(0.22 0.025 240);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.22 0.025 240);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.22 0.025 240);
+  --primary: oklch(0.588 0.158 242);
+  --primary-foreground: oklch(0.99 0.004 238);
+  --secondary: oklch(0.951 0.026 237);
+  --secondary-foreground: oklch(0.39 0.09 240);
+  --muted: oklch(0.97 0.012 237);
+  --muted-foreground: oklch(0.5 0.03 240);
+  --accent: oklch(0.901 0.058 231);
+  --accent-foreground: oklch(0.39 0.09 240);
+  --border: oklch(0.9 0.03 235);
+  --input: oklch(0.9 0.03 235);
+  --ring: oklch(0.685 0.169 237);
+}
+
+* {
+  border-color: var(--border);
+  font-family: "Roboto Condensed", sans-serif;
+}
+
+html {
+  background: var(--background);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 300;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+  transition-duration: 180ms;
+}
+
+.nav-link {
+  border-radius: 9999px;
+  padding: 0.5rem 0.85rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: var(--foreground);
+}
+
+.nav-link.router-link-active {
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: 0 1px 3px rgb(15 23 42 / 0.08);
+}
+
+::selection {
+  background: oklch(0.82 0.08 235);
+  color: oklch(0.2 0.04 240);
+}
