@@ -9,6 +9,7 @@ import CardHeader from "~/components/ui/card/CardHeader.vue";
 import CardTitle from "~/components/ui/card/CardTitle.vue";
 import Input from "~/components/ui/input/Input.vue";
 import Select from "~/components/ui/select/Select.vue";
+import { SPECIALTIES } from "~/constants/specialties";
 import type { Product } from "../../types/product";
 
 useSeoMeta({
@@ -19,15 +20,17 @@ useSeoMeta({
 const search = ref("");
 const selectedCategory = ref("All products");
 const selectedSpecialty = ref("All specialties");
+const route = useRoute();
+const router = useRouter();
 const availableOnly = ref(false);
 const failedImages = ref(new Set<string>());
-const { data, status, error, refresh } = await useFetch<Product[]>("/api/products", {
+const { data, status, error, refresh } = useLazyFetch<Product[]>("/api/products", {
   default: () => [],
 });
 
 const specialties = computed(() => [
   "All specialties",
-  ...new Set(data.value.map((product) => product.specialty)),
+  ...new Set([...SPECIALTIES, ...data.value.map((product) => product.specialty)]),
 ]);
 
 const categories = computed(() => [
@@ -51,9 +54,52 @@ const products = computed(() => {
   });
 });
 
+let syncingFiltersFromRoute = false;
+
 watch(selectedSpecialty, () => {
-  selectedCategory.value = "All products";
+  if (!syncingFiltersFromRoute) selectedCategory.value = "All products";
+}, { flush: "sync" });
+
+watch([selectedSpecialty, selectedCategory], async ([specialty, category]) => {
+  const currentSpecialty = typeof route.query.specialty === "string" ? route.query.specialty : undefined;
+  const currentCategory = typeof route.query.category === "string" ? route.query.category : undefined;
+  const nextSpecialty = specialty === "All specialties" ? undefined : specialty;
+  const nextCategory = category === "All products" ? undefined : category;
+
+  if (currentSpecialty === nextSpecialty && currentCategory === nextCategory) return;
+
+  const query = { ...route.query };
+
+  if (nextSpecialty) query.specialty = nextSpecialty;
+  else delete query.specialty;
+
+  if (nextCategory) query.category = nextCategory;
+  else delete query.category;
+
+  await router.replace({ query });
 });
+
+watch(
+  [() => route.query.specialty, () => route.query.category, status],
+  ([specialtyValue, categoryValue, fetchStatus]) => {
+    const requestedSpecialty = typeof specialtyValue === "string" ? specialtyValue : "All specialties";
+    const requestedCategory = typeof categoryValue === "string" ? categoryValue : "All products";
+
+    syncingFiltersFromRoute = true;
+
+    try {
+      selectedSpecialty.value = specialties.value.includes(requestedSpecialty)
+        ? requestedSpecialty
+        : "All specialties";
+      selectedCategory.value = fetchStatus !== "success" || categories.value.includes(requestedCategory)
+        ? requestedCategory
+        : "All products";
+    } finally {
+      syncingFiltersFromRoute = false;
+    }
+  },
+  { immediate: true },
+);
 
 function markImageFailed(sku: string) {
   failedImages.value = new Set(failedImages.value).add(sku);
