@@ -54,30 +54,52 @@ const products = computed(() => {
   });
 });
 
-watch(selectedSpecialty, async (specialty) => {
-  selectedCategory.value = "All products";
+let syncingFiltersFromRoute = false;
 
-  const currentSpecialty = typeof route.query.specialty === "string"
-    ? route.query.specialty
-    : undefined;
+watch(selectedSpecialty, () => {
+  if (!syncingFiltersFromRoute) selectedCategory.value = "All products";
+}, { flush: "sync" });
+
+watch([selectedSpecialty, selectedCategory], async ([specialty, category]) => {
+  const currentSpecialty = typeof route.query.specialty === "string" ? route.query.specialty : undefined;
+  const currentCategory = typeof route.query.category === "string" ? route.query.category : undefined;
   const nextSpecialty = specialty === "All specialties" ? undefined : specialty;
+  const nextCategory = category === "All products" ? undefined : category;
 
-  if (currentSpecialty === nextSpecialty) return;
+  if (currentSpecialty === nextSpecialty && currentCategory === nextCategory) return;
 
   const query = { ...route.query };
 
   if (nextSpecialty) query.specialty = nextSpecialty;
   else delete query.specialty;
 
+  if (nextCategory) query.category = nextCategory;
+  else delete query.category;
+
   await router.replace({ query });
 });
 
-watch(() => route.query.specialty, (value) => {
-  const requestedSpecialty = typeof value === "string" ? value : "All specialties";
-  selectedSpecialty.value = specialties.value.includes(requestedSpecialty)
-    ? requestedSpecialty
-    : "All specialties";
-}, { immediate: true });
+watch(
+  [() => route.query.specialty, () => route.query.category, status],
+  ([specialtyValue, categoryValue, fetchStatus]) => {
+    const requestedSpecialty = typeof specialtyValue === "string" ? specialtyValue : "All specialties";
+    const requestedCategory = typeof categoryValue === "string" ? categoryValue : "All products";
+
+    syncingFiltersFromRoute = true;
+
+    try {
+      selectedSpecialty.value = specialties.value.includes(requestedSpecialty)
+        ? requestedSpecialty
+        : "All specialties";
+      selectedCategory.value = fetchStatus !== "success" || categories.value.includes(requestedCategory)
+        ? requestedCategory
+        : "All products";
+    } finally {
+      syncingFiltersFromRoute = false;
+    }
+  },
+  { immediate: true },
+);
 
 function markImageFailed(sku: string) {
   failedImages.value = new Set(failedImages.value).add(sku);
