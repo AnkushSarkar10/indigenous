@@ -21,6 +21,7 @@ const search = ref("");
 const selectedCategory = ref("All products");
 const selectedSpecialty = ref("All specialties");
 const route = useRoute();
+const router = useRouter();
 const availableOnly = ref(false);
 const failedImages = ref(new Set<string>());
 const { data, status, error, refresh } = useLazyFetch<Product[]>("/api/products", {
@@ -53,8 +54,22 @@ const products = computed(() => {
   });
 });
 
-watch(selectedSpecialty, () => {
+watch(selectedSpecialty, async (specialty) => {
   selectedCategory.value = "All products";
+
+  const currentSpecialty = typeof route.query.specialty === "string"
+    ? route.query.specialty
+    : undefined;
+  const nextSpecialty = specialty === "All specialties" ? undefined : specialty;
+
+  if (currentSpecialty === nextSpecialty) return;
+
+  const query = { ...route.query };
+
+  if (nextSpecialty) query.specialty = nextSpecialty;
+  else delete query.specialty;
+
+  await router.replace({ query });
 });
 
 watch(() => route.query.specialty, (value) => {
