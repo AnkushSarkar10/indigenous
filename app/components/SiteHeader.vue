@@ -47,8 +47,8 @@ watch(() => route.fullPath, () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuLink as-child>
-              <NuxtLink to="/" class="desktop-nav-link">About Us</NuxtLink>
+            <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#about'">
+              <NuxtLink to="/#about" class="desktop-nav-link">About Us</NuxtLink>
             </NavigationMenuLink>
           </NavigationMenuItem>
 
@@ -86,8 +86,8 @@ watch(() => route.fullPath, () => {
           </NavigationMenuItem>
 
           <NavigationMenuItem>
-            <NavigationMenuLink as-child>
-              <NuxtLink to="/" class="desktop-nav-link">Contact Us</NuxtLink>
+            <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#contact'">
+              <NuxtLink to="/#contact" class="desktop-nav-link">Contact Us</NuxtLink>
             </NavigationMenuLink>
           </NavigationMenuItem>
         </NavigationMenuList>
@@ -114,8 +114,8 @@ watch(() => route.fullPath, () => {
         aria-label="Mobile navigation"
       >
         <div class="mx-auto max-w-7xl">
-          <NuxtLink to="/" class="mobile-nav-link">Home</NuxtLink>
-          <NuxtLink to="/" class="mobile-nav-link">About Us</NuxtLink>
+          <NuxtLink to="/" class="mobile-nav-link" @click="mobileOpen = false">Home</NuxtLink>
+          <NuxtLink to="/#about" class="mobile-nav-link" @click="mobileOpen = false">About Us</NuxtLink>
 
           <div class="flex min-h-13 items-center border-b border-border">
             <NuxtLink to="/products" class="flex min-h-13 flex-1 items-center text-lg font-bold text-foreground">
@@ -151,7 +151,7 @@ watch(() => route.fullPath, () => {
             </div>
           </Transition>
 
-          <NuxtLink to="/" class="mobile-nav-link">Contact Us</NuxtLink>
+          <NuxtLink to="/#contact" class="mobile-nav-link" @click="mobileOpen = false">Contact Us</NuxtLink>
         </div>
       </nav>
     </Transition>
