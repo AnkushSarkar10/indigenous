@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { Plus } from "@lucide/vue";
 import Badge from "~/components/ui/badge/Badge.vue";
 import Button from "~/components/ui/button/Button.vue";
 import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import Card from "~/components/ui/card/Card.vue";
 import CardContent from "~/components/ui/card/CardContent.vue";
 import CardHeader from "~/components/ui/card/CardHeader.vue";
+import CardFooter from "~/components/ui/card/CardFooter.vue";
 import CardTitle from "~/components/ui/card/CardTitle.vue";
 import Input from "~/components/ui/input/Input.vue";
 import Select from "~/components/ui/select/Select.vue";
@@ -18,6 +20,7 @@ useSeoMeta({
 });
 
 const search = ref("");
+const { addItem, coolingDownSkus } = useInquiryList();
 const selectedCategory = ref("All products");
 const selectedSpecialty = ref("All specialties");
 const route = useRoute();
@@ -221,6 +224,12 @@ function clearFilters() {
               {{ product.description || "Precision-engineered for dependable clinical performance." }}
             </p>
           </CardContent>
+          <CardFooter class="!p-4 !pt-0">
+            <Button type="button" class="w-full" :disabled="coolingDownSkus.includes(product.sku)" :aria-label="`Add ${product.name} to inquiry`" @click="addItem(product)">
+              <Plus class="size-4" aria-hidden="true" />
+              Add to inquiry
+            </Button>
+          </CardFooter>
         </Card>
       </div>
 
