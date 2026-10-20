@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowRight, ChevronDown, Menu, X } from "@lucide/vue";
+import { ArrowRight, ChevronDown, Menu, ShoppingCart, X } from "@lucide/vue";
 import {
   NavigationMenuContent,
   NavigationMenuItem,
@@ -12,6 +12,7 @@ import { ref, watch } from "vue";
 import { SPECIALTIES } from "~/constants/specialties";
 
 const route = useRoute();
+const { itemCount } = useInquiryList();
 const mobileOpen = ref(false);
 const mobileProductsOpen = ref(false);
 
@@ -19,6 +20,8 @@ const productLink = (specialty: string) => ({
   path: "/products",
   query: { specialty },
 });
+
+const isSpecialtyActive = (specialty: string) => route.path === "/products" && route.query.specialty === specialty;
 
 watch(() => route.fullPath, () => {
   mobileOpen.value = false;
@@ -38,72 +41,84 @@ watch(() => route.fullPath, () => {
         <span class="text-lg font-bold leading-none tracking-[-0.02em]">Indigenous</span>
       </NuxtLink>
 
-      <NavigationMenuRoot class="relative hidden lg:block" aria-label="Main navigation">
-        <NavigationMenuList class="flex list-none items-center gap-1">
-          <NavigationMenuItem>
-            <NavigationMenuLink as-child :active="route.path === '/' && !route.hash">
-              <NuxtLink to="/" class="desktop-nav-link">Home</NuxtLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+      <div class="flex items-center gap-3 lg:gap-5">
+        <NavigationMenuRoot class="relative hidden lg:block" aria-label="Main navigation">
+          <NavigationMenuList class="flex list-none items-center gap-1">
+            <NavigationMenuItem>
+              <NavigationMenuLink as-child :active="route.path === '/' && !route.hash">
+                <NuxtLink to="/" class="desktop-nav-link">Home</NuxtLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#about'">
-              <NuxtLink to="/#about" class="desktop-nav-link">About Us</NuxtLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#about'">
+                <NuxtLink to="/#about" class="desktop-nav-link">About Us</NuxtLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
 
-          <NavigationMenuItem value="products">
-            <NavigationMenuTrigger
-              as-child
-              class="desktop-nav-link group inline-flex items-center gap-1.5"
-              :class="{ 'is-active': route.path === '/products' }"
-            >
-              <NuxtLink to="/products">
-                Products
-                <ChevronDown
-                  class="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180"
-                  aria-hidden="true"
-                />
-              </NuxtLink>
-            </NavigationMenuTrigger>
-            <NavigationMenuContent class="nav-menu-content absolute right-0 top-[calc(100%+0.65rem)] w-[30rem]">
-              <div class="overflow-hidden rounded-2xl border border-border bg-popover p-2 text-popover-foreground shadow-[0_24px_70px_-24px_rgba(15,23,42,.25)]">
-                <ul class="list-none">
-                  <li v-for="specialty in SPECIALTIES" :key="specialty" class="border-b border-border/70 last:border-0">
-                    <NavigationMenuLink as-child>
-                      <NuxtLink
-                        :to="productLink(specialty)"
-                        class="group flex items-center justify-between gap-6 rounded-lg px-4 py-3 text-lg font-bold tracking-[-0.01em] outline-none transition hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
-                      >
-                        <span>{{ specialty }}</span>
-                        <ArrowRight class="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true" />
-                      </NuxtLink>
-                    </NavigationMenuLink>
-                  </li>
-                </ul>
-              </div>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
+            <NavigationMenuItem value="products">
+              <NavigationMenuTrigger
+                as-child
+                class="desktop-nav-link group inline-flex items-center gap-1.5"
+                :class="{ 'is-active': route.path === '/products' }"
+              >
+                <NuxtLink to="/products">
+                  Products
+                  <ChevronDown
+                    class="size-3.5 transition-transform duration-200 group-data-[state=open]:rotate-180"
+                    aria-hidden="true"
+                  />
+                </NuxtLink>
+              </NavigationMenuTrigger>
+              <NavigationMenuContent class="nav-menu-content absolute right-0 top-[calc(100%+0.65rem)] w-[30rem]">
+                <div class="overflow-hidden rounded-2xl border border-border bg-popover p-2 text-popover-foreground shadow-[0_24px_70px_-24px_rgba(15,23,42,.25)]">
+                  <ul class="list-none">
+                    <li v-for="specialty in SPECIALTIES" :key="specialty" class="border-b border-border/70 last:border-0">
+                      <NavigationMenuLink as-child :active="isSpecialtyActive(specialty)">
+                        <NuxtLink
+                          :to="productLink(specialty)"
+                          class="specialty-nav-link group flex items-center justify-between gap-6 rounded-lg px-4 py-3 text-lg font-bold tracking-[-0.01em] outline-none transition hover:bg-muted focus-visible:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+                        >
+                          <span>{{ specialty }}</span>
+                          <ArrowRight class="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                        </NuxtLink>
+                      </NavigationMenuLink>
+                    </li>
+                  </ul>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
 
-          <NavigationMenuItem>
-            <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#contact'">
-              <NuxtLink to="/#contact" class="desktop-nav-link">Contact Us</NuxtLink>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenuRoot>
+            <NavigationMenuItem>
+              <NavigationMenuLink as-child :active="route.path === '/' && route.hash === '#contact'">
+                <NuxtLink to="/#contact" class="desktop-nav-link">Contact Us</NuxtLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenuRoot>
 
-      <button
-        type="button"
-        class="grid size-10 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
-        :aria-expanded="mobileOpen"
-        aria-controls="mobile-navigation"
-        :aria-label="mobileOpen ? 'Close navigation' : 'Open navigation'"
-        @click="mobileOpen = !mobileOpen"
-      >
-        <X v-if="mobileOpen" class="size-5" aria-hidden="true" />
-        <Menu v-else class="size-5" aria-hidden="true" />
-      </button>
+        <NuxtLink
+          to="/quote-list"
+          class="relative grid size-11 shrink-0 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring"
+          :class="{ 'bg-muted ring-2 ring-ring': route.path === '/quote-list' }"
+          :aria-label="`Quote list, ${itemCount} ${itemCount === 1 ? 'item' : 'items'}`"
+        >
+          <ShoppingCart class="size-5" aria-hidden="true" />
+          <span class="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground" aria-hidden="true">{{ itemCount }}</span>
+        </NuxtLink>
+
+        <button
+          type="button"
+          class="grid size-10 place-items-center rounded-full border border-border bg-background text-foreground shadow-sm outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring lg:hidden"
+          :aria-expanded="mobileOpen"
+          aria-controls="mobile-navigation"
+          :aria-label="mobileOpen ? 'Close navigation' : 'Open navigation'"
+          @click="mobileOpen = !mobileOpen"
+        >
+          <X v-if="mobileOpen" class="size-5" aria-hidden="true" />
+          <Menu v-else class="size-5" aria-hidden="true" />
+        </button>
+      </div>
     </div>
 
     <Transition name="mobile-menu">
@@ -114,11 +129,11 @@ watch(() => route.fullPath, () => {
         aria-label="Mobile navigation"
       >
         <div class="mx-auto max-w-7xl">
-          <NuxtLink to="/" class="mobile-nav-link" @click="mobileOpen = false">Home</NuxtLink>
-          <NuxtLink to="/#about" class="mobile-nav-link" @click="mobileOpen = false">About Us</NuxtLink>
+          <NuxtLink to="/" class="mobile-nav-link" :class="{ 'active-nav-link': route.path === '/' && !route.hash }" @click="mobileOpen = false">Home</NuxtLink>
+          <NuxtLink to="/#about" class="mobile-nav-link" :class="{ 'active-nav-link': route.path === '/' && route.hash === '#about' }" @click="mobileOpen = false">About Us</NuxtLink>
 
           <div class="flex min-h-13 items-center border-b border-border">
-            <NuxtLink to="/products" class="flex min-h-13 flex-1 items-center text-lg font-bold text-foreground">
+            <NuxtLink to="/products" class="mobile-product-link flex min-h-13 flex-1 items-center rounded-xl px-3 text-lg font-bold text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring" :class="{ 'active-nav-link': route.path === '/products' }">
               Products
             </NuxtLink>
             <button
@@ -143,7 +158,8 @@ watch(() => route.fullPath, () => {
                 v-for="specialty in SPECIALTIES"
                 :key="specialty"
                 :to="productLink(specialty)"
-                class="group flex items-center justify-between gap-4 border-b border-border/70 px-3 py-3 text-base font-bold last:border-0"
+                class="group flex items-center justify-between gap-4 rounded-lg border-b border-border/70 px-3 py-3 text-base font-bold outline-none focus-visible:ring-2 focus-visible:ring-ring last:border-0"
+                :class="{ 'active-nav-link': isSpecialtyActive(specialty) }"
               >
                 <span>{{ specialty }}</span>
                 <ArrowRight class="size-4 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -151,7 +167,7 @@ watch(() => route.fullPath, () => {
             </div>
           </Transition>
 
-          <NuxtLink to="/#contact" class="mobile-nav-link" @click="mobileOpen = false">Contact Us</NuxtLink>
+          <NuxtLink to="/#contact" class="mobile-nav-link" :class="{ 'active-nav-link': route.path === '/' && route.hash === '#contact' }" @click="mobileOpen = false">Contact Us</NuxtLink>
         </div>
       </nav>
     </Transition>
@@ -178,7 +194,13 @@ watch(() => route.fullPath, () => {
   color: var(--foreground);
 }
 
-.desktop-nav-link:focus-visible {
+.desktop-nav-link:focus-visible,
+.desktop-nav-link[data-active],
+.desktop-nav-link.is-active,
+.specialty-nav-link[data-active],
+.active-nav-link {
+  background: var(--muted);
+  color: var(--foreground);
   box-shadow: 0 0 0 2px var(--ring);
 }
 
@@ -195,10 +217,18 @@ watch(() => route.fullPath, () => {
   min-height: 3.25rem;
   align-items: center;
   border-bottom: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding-inline: 0.75rem;
+  margin-block: 0.25rem;
   color: var(--foreground);
   font-size: 1.125rem;
   font-weight: 700;
   text-decoration: none;
+  outline: none;
+}
+
+.mobile-nav-link:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
 }
 
 .mobile-menu-enter-active,
