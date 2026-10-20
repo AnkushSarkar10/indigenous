@@ -19,7 +19,7 @@ function dismissNotice(id: number) {
     >
       <CircleCheck class="mt-0.5 size-5 shrink-0 text-primary" aria-hidden="true" />
       <ToastTitle class="min-w-0 flex-1 break-words text-sm font-medium leading-6">
-        {{ notice.productName }} added to enquiry
+        {{ notice.productName }} added to inquiry
       </ToastTitle>
       <ToastClose class="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring" aria-label="Dismiss notification">
         <X class="size-4" aria-hidden="true" />
