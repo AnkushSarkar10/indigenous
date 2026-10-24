@@ -23,6 +23,7 @@
     "vue-router": "^5.2.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.4.3",
     "@tailwindcss/vite": "^4.3.3",
     "@types/pg": "^8.23.1",
     "cheerio": "^1.2.0",
