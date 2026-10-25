@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ArrowLeft, ArrowRight, Check, CircleCheck, ImageOff, LoaderCircle, Minus, Plus, ShoppingCart, Trash2 } from "@lucide/vue";
+import { ArrowLeft, ArrowRight, Check, CircleCheck, ImageOff, LoaderCircle, Minus, Phone, Plus, ShoppingCart, Trash2 } from "@lucide/vue";
 import { computed, nextTick, reactive, ref } from "vue";
 import Breadcrumb from "~/components/ui/breadcrumb/Breadcrumb.vue";
 import BreadcrumbItem from "~/components/ui/breadcrumb/BreadcrumbItem.vue";
@@ -8,6 +8,7 @@ import BreadcrumbList from "~/components/ui/breadcrumb/BreadcrumbList.vue";
 import BreadcrumbPage from "~/components/ui/breadcrumb/BreadcrumbPage.vue";
 import Button from "~/components/ui/button/Button.vue";
 import Input from "~/components/ui/input/Input.vue";
+import { HOMEPAGE_CONTENT } from "~/constants/homepage";
 import type { InquiryItem } from "~/composables/useInquiryList";
 
 useSeoMeta({
@@ -25,6 +26,9 @@ const submissionKey = ref("");
 const submitting = ref(false);
 const submitError = ref("");
 const reference = ref("");
+const confirmationPhoneHref = /^\+?[\d\s().-]+$/.test(HOMEPAGE_CONTENT.phone)
+  ? `tel:${HOMEPAGE_CONTENT.phone.replace(/[^\d+]/g, "")}`
+  : undefined;
 const submittedItems = ref<InquiryItem[]>([]);
 const flowSteps = ["My Cart", "Contact details", "Submit request"];
 const currentFlowStep = computed(() => reference.value || submitting.value ? 2 : step.value === "details" ? 1 : 0);
@@ -88,7 +92,7 @@ function removeFromInquiry(sku: string, name: string) {
 
     <div class="mb-8 mt-6">
       <h1 ref="stepHeading" tabindex="-1" class="text-3xl font-bold tracking-tight outline-none sm:text-4xl">{{ reference ? 'Thank you for your request' : step === 'details' ? 'Your contact details' : 'Request a quote' }}</h1>
-      <p class="mt-3 text-muted-foreground">{{ reference ? 'Your quote request has been received for our sales team to review.' : step === 'details' ? 'Tell us a little about yourself so our sales team can help with your quote.' : 'Review the equipment you’ve added to your inquiry.' }}</p>
+      <p class="mt-3 text-muted-foreground">{{ reference ? 'Your request has been received. Please call us to confirm your order.' : step === 'details' ? 'Tell us a little about yourself so our sales team can help with your quote.' : 'Review the equipment you’ve added to your inquiry.' }}</p>
       <Breadcrumb v-if="isLoaded && (items.length || reference)" aria-label="Quote request progress" class="quote-flow mt-6">
         <BreadcrumbList class="quote-flow-list">
           <BreadcrumbItem v-for="(label, index) in flowSteps" :key="label" class="quote-flow-item" :class="{ 'is-reached': index <= currentFlowStep }" :data-state="index === currentFlowStep ? 'current' : index < currentFlowStep ? 'complete' : 'upcoming'">
@@ -107,15 +111,21 @@ function removeFromInquiry(sku: string, name: string) {
     <p role="status" class="sr-only">{{ announcement }}</p>
 
     <div v-if="reference" class="rounded-2xl border border-border bg-card p-6 sm:p-8">
-      <CircleCheck class="mb-4 size-10 text-primary" aria-hidden="true" />
-      <h2 class="text-xl font-semibold">Your request is in</h2>
-      <p class="mt-2 text-muted-foreground">We’ll use the contact details you provided to respond about your selected equipment.</p>
-      <p class="mt-4 break-all text-sm">Your reference: <strong>{{ reference }}</strong></p>
-      <h3 class="mb-3 mt-6 font-semibold">Requested items</h3>
+      <div class="py-4 text-center sm:py-6">
+        <CircleCheck class="mx-auto mb-4 size-10 text-primary" aria-hidden="true" />
+        <h2 class="text-xl font-semibold">Your request is in</h2>
+        <p class="mt-6 text-sm font-medium text-muted-foreground">Your reference ID</p>
+        <p class="mt-2 text-5xl font-bold tracking-wider text-primary tabular-nums sm:text-6xl">{{ reference }}</p>
+        <h3 class="mt-8 text-lg font-semibold">Call us to confirm your order</h3>
+        <component :is="confirmationPhoneHref ? 'a' : 'p'" :href="confirmationPhoneHref" class="mt-3 inline-flex items-center justify-center gap-2 rounded text-xl font-semibold text-primary outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-2xl" :class="{ 'hover:underline': confirmationPhoneHref }">
+          <Phone class="size-5 shrink-0" aria-hidden="true" />{{ HOMEPAGE_CONTENT.phone }}
+        </component>
+        <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-muted-foreground">Please call the number above and quote your reference ID. Your order will be confirmed over the phone.</p>
+      </div>
+      <h3 class="mb-3 mt-6 border-t border-border pt-6 font-semibold">Requested items</h3>
       <ul class="divide-y divide-border border-y border-border">
         <li v-for="item in submittedItems" :key="item.sku" class="flex justify-between gap-4 py-3 text-sm"><span>{{ item.name }} <span class="text-muted-foreground">({{ item.sku }})</span></span><span class="shrink-0 font-semibold">Qty {{ item.quantity }}</span></li>
       </ul>
-      <Button as="NuxtLink" to="/products" class="mt-6">Continue browsing</Button>
     </div>
 
     <div v-else-if="!isLoaded" role="status" class="flex flex-col items-center justify-center gap-4 rounded-2xl border border-border bg-muted/40 px-6 py-16 text-center">

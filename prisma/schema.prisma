@@ -24,6 +24,7 @@ model Product {
 
 model QuoteRequest {
   id             String             @id @default(cuid())
+  reference      String             @unique @db.VarChar(7)
   firstName      String
   lastName       String
   organisation   String?

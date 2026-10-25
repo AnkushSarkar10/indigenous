@@ -1,5 +1,6 @@
 import { prisma } from "../utils/db";
 import { QUOTE_CONSENT_VERSION, validateQuoteRequest } from "../utils/quote-request";
+import { QuoteReferenceUnavailableError, saveWithQuoteReference } from "../utils/quote-reference";
 
 export default defineEventHandler(async (event) => {
   setHeader(event, "Cache-Control", "no-store");
@@ -11,8 +12,9 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: error instanceof Error ? error.message : "Please check your request." });
   }
   // Reuse the saved result if the browser retries after a network failure.
-  const existing = await prisma.quoteRequest.findUnique({ where: { submissionKey: input.submissionKey }, select: { id: true } });
-  if (existing) return { reference: existing.id };
+  const findExisting = () => prisma.quoteRequest.findUnique({ where: { submissionKey: input.submissionKey }, select: { reference: true } });
+  const existing = await findExisting();
+  if (existing) return existing;
 
   const products = await prisma.product.findMany({ where: { sku: { in: input.items.map((item) => item.sku) } }, select: { id: true, sku: true, name: true } });
   if (products.length !== input.items.length) throw createError({ statusCode: 400, statusMessage: "Some selected items are no longer in our catalogue. Please review your list." });
@@ -33,6 +35,15 @@ export default defineEventHandler(async (event) => {
     },
     consentVersion: QUOTE_CONSENT_VERSION,
   };
-  const request = await prisma.quoteRequest.upsert({ where: { submissionKey: input.submissionKey }, create: data, update: {}, select: { id: true } });
-  return { reference: request.id };
+  try {
+    return await saveWithQuoteReference(
+      (reference) => prisma.quoteRequest.upsert({ where: { submissionKey: input.submissionKey }, create: { ...data, reference }, update: {}, select: { reference: true } }),
+      findExisting,
+    );
+  } catch (error) {
+    if (error instanceof QuoteReferenceUnavailableError) {
+      throw createError({ statusCode: 503, statusMessage: "We couldn’t create your reference. Please try submitting your request again." });
+    }
+    throw error;
+  }
 });
