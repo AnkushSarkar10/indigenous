@@ -37,6 +37,7 @@ model QuoteRequest {
   consentedAt    DateTime           @default(now())
   // Preserve the existing database column and index for stored requests.
   submissionKey  String             @unique(map: "quote_requests_captchaId_key") @map("captchaId")
+  submissionPayloadHash String?      @db.Char(64)
   createdAt      DateTime           @default(now())
 
   @@map("quote_requests")

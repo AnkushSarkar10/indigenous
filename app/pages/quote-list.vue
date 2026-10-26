@@ -9,6 +9,7 @@ import BreadcrumbPage from "~/components/ui/breadcrumb/BreadcrumbPage.vue";
 import Button from "~/components/ui/button/Button.vue";
 import Input from "~/components/ui/input/Input.vue";
 import { HOMEPAGE_CONTENT } from "~/constants/homepage";
+import { prepareQuoteSubmission, type QuoteSubmission } from "~/utils/quote-submission";
 import type { InquiryItem } from "~/composables/useInquiryList";
 
 useSeoMeta({
@@ -22,7 +23,7 @@ const announcement = ref("");
 const step = ref<"items" | "details">("items");
 const stepHeading = ref<HTMLElement>();
 const form = reactive({ firstName: "", lastName: "", organisation: "", email: "", contactNumber: "", address: "", notes: "", consent: false });
-const submissionKey = ref("");
+const submission = ref<QuoteSubmission | null>(null);
 const submitting = ref(false);
 const submitError = ref("");
 const reference = ref("");
@@ -52,24 +53,27 @@ async function editItems() {
 
 async function submitRequest() {
   if (submitting.value || !items.value.length || !form.consent) return;
-  submissionKey.value ||= crypto.randomUUID();
   submitting.value = true;
   submitError.value = "";
   const selected = items.value.map((item) => ({ ...item }));
   try {
+    submission.value = prepareQuoteSubmission({ ...form, items: selected.map(({ sku, quantity }) => ({ sku, quantity })) }, submission.value);
     const result = await $fetch("/api/quote-requests", {
       method: "POST",
-      body: { ...form, submissionKey: submissionKey.value, items: selected.map(({ sku, quantity }) => ({ sku, quantity })) },
+      headers: { "Content-Type": "application/json" },
+      body: submission.value.body,
     });
     submittedItems.value = selected;
     reference.value = result.reference;
     items.value = [];
+    submission.value = null;
     // Contact details stay in memory only while the form is being completed.
     Object.assign(form, { firstName: "", lastName: "", organisation: "", email: "", contactNumber: "", address: "", notes: "", consent: false });
     await focusHeading();
   } catch (error: unknown) {
     const response = error as { data?: { statusMessage?: string }; statusCode?: number };
-    submitError.value = (response.statusCode === 400 || response.statusCode === 503) && response.data?.statusMessage
+    if (response.statusCode === 409) submission.value = null;
+    submitError.value = [400, 408, 409, 413, 429, 503].includes(response.statusCode ?? 0) && response.data?.statusMessage
       ? response.data.statusMessage
       : "We couldn’t submit your request. Your details and items are still here. Please try again.";
   } finally {
