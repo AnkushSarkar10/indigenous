@@ -2,6 +2,7 @@ import { prisma } from "../utils/db";
 
 export default defineEventHandler(async () => {
   const products = await prisma.product.findMany({
+    where: { isAvailable: true },
     orderBy: [{ category: "asc" }, { name: "asc" }],
   });
 

@@ -3,7 +3,6 @@ import { computed, ref, watch } from "vue";
 import { Plus } from "@lucide/vue";
 import Badge from "~/components/ui/badge/Badge.vue";
 import Button from "~/components/ui/button/Button.vue";
-import Checkbox from "~/components/ui/checkbox/Checkbox.vue";
 import Card from "~/components/ui/card/Card.vue";
 import CardContent from "~/components/ui/card/CardContent.vue";
 import CardHeader from "~/components/ui/card/CardHeader.vue";
@@ -25,7 +24,6 @@ const selectedCategory = ref("All products");
 const selectedSpecialty = ref("All specialties");
 const route = useRoute();
 const router = useRouter();
-const availableOnly = ref(false);
 const failedImages = ref(new Set<string>());
 const { data, status, error, refresh } = useLazyFetch<Product[]>("/api/products", {
   default: () => [],
@@ -49,11 +47,10 @@ const products = computed(() => {
   return data.value.filter((product) => {
     const matchesSpecialty = selectedSpecialty.value === "All specialties" || product.specialty === selectedSpecialty.value;
     const matchesCategory = selectedCategory.value === "All products" || product.category === selectedCategory.value;
-    const matchesAvailability = !availableOnly.value || product.isAvailable;
     const matchesSearch = !term || [product.name, product.category, product.specialty, product.sku]
       .some((value) => value.toLowerCase().includes(term));
 
-    return matchesSpecialty && matchesCategory && matchesAvailability && matchesSearch;
+    return matchesSpecialty && matchesCategory && matchesSearch;
   });
 });
 
@@ -112,7 +109,6 @@ function clearFilters() {
   search.value = "";
   selectedCategory.value = "All products";
   selectedSpecialty.value = "All specialties";
-  availableOnly.value = false;
 }
 </script>
 
@@ -127,13 +123,6 @@ function clearFilters() {
               <Select id="specialty" v-model="selectedSpecialty" aria-label="Filter by specialty">
                 <option v-for="specialty in specialties" :key="specialty" :value="specialty">{{ specialty }}</option>
               </Select>
-            </div>
-            <div class="w-full sm:w-auto">
-              <span class="mb-1.5 block text-xs font-medium text-muted-foreground">Availability</span>
-              <label for="available-only" class="flex h-11 cursor-pointer items-center gap-2.5 rounded-md border border-input bg-background px-3 text-sm font-medium shadow-sm transition hover:bg-accent/50">
-                <Checkbox id="available-only" v-model="availableOnly" />
-                Available only
-              </label>
             </div>
           </div>
 
@@ -171,7 +160,7 @@ function clearFilters() {
         <p class="text-sm text-muted-foreground">
           Showing <span class="font-semibold text-foreground">{{ products.length }}</span> {{ products.length === 1 ? "product" : "products" }}
         </p>
-        <button v-if="search || selectedCategory !== 'All products' || selectedSpecialty !== 'All specialties' || availableOnly" class="text-sm font-medium text-primary hover:underline" @click="clearFilters">
+        <button v-if="search || selectedCategory !== 'All products' || selectedSpecialty !== 'All specialties'" class="text-sm font-medium text-primary hover:underline" @click="clearFilters">
           Clear filters
         </button>
       </div>
