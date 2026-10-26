@@ -38,6 +38,8 @@ function eventFor(body: string, client = `192.0.2.${++clientNumber}`, headers: R
       req: Object.assign(Readable.from([Buffer.from(body)]), { headers, socket: { remoteAddress: client } }),
       res: new EventEmitter(),
     },
+    background: [] as Promise<unknown>[],
+    waitUntil(promise: Promise<unknown>) { this.background.push(promise); },
     responseHeaders: {} as Record<string, string>,
   };
 }
@@ -69,6 +71,23 @@ test("an identical retry returns its reference without looking up products or sa
   assert.deepEqual(await send(body), { reference: "IND-323" });
   assert.equal(create.mock.calls.length, 0);
   assert.equal(products.mock.calls.length, 0);
+});
+
+test("enabled confirmations are queued with the quote using trusted product snapshots", async (t) => {
+  t.mock.method(globalThis as typeof globalThis & { useRuntimeConfig: () => unknown }, "useRuntimeConfig", () => ({
+    quoteRequestTrustProxy: false, quoteEmailEnabled: true,
+    resendFromEmail: "Indigenous <onboarding@resend.dev>", resendQuoteTemplateId: "template-1",
+  }));
+  const { create } = mockDatabase(t);
+  const event = eventFor(JSON.stringify(request()));
+  assert.deepEqual(await handler(event as never), { reference: "IND-323" });
+  const data = create.mock.calls[0]!.arguments[0]!.data;
+  const payload = data.confirmationEmail!.create!.payload as { to: string[]; template: { variables: Record<string, string> } };
+  assert.deepEqual(payload.to, ["alex@example.com"]);
+  assert.equal(payload.template.variables.REFERENCE, data.reference);
+  assert.match(payload.template.variables.ITEMS_HTML!, /Instrument \(SKU-1\).*Quantity: 2/);
+  assert.equal(event.background.length, 1);
+  await Promise.all(event.background);
 });
 
 test("rejects changed details, items and even JSON whitespace on a reused key", async (t) => {

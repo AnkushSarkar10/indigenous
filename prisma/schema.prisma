@@ -33,6 +33,7 @@ model QuoteRequest {
   address        String?
   notes          String?
   items          QuoteRequestItem[]
+  confirmationEmail QuoteConfirmationEmail?
   consentVersion String
   consentedAt    DateTime           @default(now())
   // Preserve the existing database column and index for stored requests.
@@ -41,6 +42,23 @@ model QuoteRequest {
   createdAt      DateTime           @default(now())
 
   @@map("quote_requests")
+}
+
+model QuoteConfirmationEmail {
+  quoteRequestId String @id
+  quoteRequest QuoteRequest @relation(fields: [quoteRequestId], references: [id], onDelete: Cascade)
+  // Freeze the provider payload so retries keep the same content and recipient.
+  payload Json @db.JsonB
+  status String @default("pending")
+  attempts Int @default(0)
+  firstAttemptAt DateTime?
+  nextAttemptAt DateTime @default(now())
+  providerMessageId String?
+  sentAt DateTime?
+  lastError String?
+
+  @@index([status, nextAttemptAt])
+  @@map("quote_confirmation_emails")
 }
 
 model QuoteRequestItem {

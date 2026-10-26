@@ -7,6 +7,13 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Enable only when a trusted reverse proxy overwrites X-Forwarded-For.
     quoteRequestTrustProxy: false,
+    quoteEmailEnabled: false,
+    resendFromEmail: "Indigenous <onboarding@resend.dev>",
+    resendQuoteTemplateId: "",
+  },
+  nitro: {
+    experimental: { tasks: true },
+    scheduledTasks: { "* * * * *": ["quote-emails"] },
   },
   vite: {
     plugins: [
