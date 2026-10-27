@@ -1,7 +1,7 @@
 // Replace these placeholders with approved company copy and contact details.
 // Contact details deliberately remain plain text until real values are provided.
 export const HOMEPAGE_CONTENT = {
-  // Shared by the homepage and the order confirmation screen. Replace this
+  // Shared by the homepage, order confirmation screen and confirmation emails. Replace this
   // placeholder with the confirmation number; valid numbers become call links.
   phone: "+91 XXXXX XXXXX",
   email: "hello@example.com",

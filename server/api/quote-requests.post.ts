@@ -3,12 +3,15 @@ import { prisma } from "../utils/db";
 import { QUOTE_CONSENT_VERSION, validateQuoteRequest } from "../utils/quote-request";
 import { QuoteReferenceUnavailableError, saveWithQuoteReference } from "../utils/quote-reference";
 import { closeUnreadQuoteRequest, createQuoteRequestLimiter, readLimitedQuoteBody } from "../utils/quote-request-limits";
+import { buildQuoteConfirmationEmail, quoteEmailSettings } from "../utils/quote-email";
+import { deliverQuoteEmails } from "../utils/quote-email-delivery";
 
 const allowQuoteRequest = createQuoteRequestLimiter();
 
 export default defineEventHandler(async (event) => {
   setHeader(event, "Cache-Control", "no-store");
   const config = useRuntimeConfig(event);
+  const emailSettings = quoteEmailSettings(config);
   const trustProxy = String(config.quoteRequestTrustProxy) === "true";
   const client = getRequestIP(event, { xForwardedFor: trustProxy }) || "unknown";
   const limit = allowQuoteRequest(client);
@@ -60,10 +63,21 @@ export default defineEventHandler(async (event) => {
     consentVersion: QUOTE_CONSENT_VERSION,
   };
   try {
-    return await saveWithQuoteReference(
-      (reference) => prisma.quoteRequest.create({ data: { ...data, reference }, select: { reference: true } }),
+    const saved = await saveWithQuoteReference(
+      (reference) => prisma.quoteRequest.create({ data: {
+        ...data, reference,
+        // Nested creation commits the quote and its notification together.
+        ...(emailSettings ? { confirmationEmail: { create: { payload: buildQuoteConfirmationEmail({ reference, firstName: input.firstName, email: input.email, items: data.items.create }, emailSettings) } } } : {}),
+      }, select: { reference: true } }),
       findExisting,
     );
+    if (emailSettings) {
+      const delivery = deliverQuoteEmails(process.env.RESEND_API_KEY, saved.reference).catch(() => {
+        console.warn("Quote email worker unavailable; pending confirmation will be retried.");
+      });
+      event.waitUntil(delivery);
+    }
+    return saved;
   } catch (error) {
     if (error instanceof QuoteReferenceUnavailableError) {
       throw createError({ statusCode: 503, statusMessage: "We couldn’t create your reference. Please try submitting your request again." });

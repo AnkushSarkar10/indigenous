@@ -87,8 +87,55 @@ screen displays it prominently and asks the customer to call to confirm the orde
 Change `HOMEPAGE_CONTENT.phone` in `app/constants/homepage.ts` to update the phone
 number on both the homepage and confirmation screen; a valid number becomes a
 click-to-call link on the confirmation screen.
-Email delivery and a sales administration inbox are not
-configured by this flow.
+Quote confirmation emails use Resend when enabled. A sales administration inbox
+is not configured by this flow.
+
+### Quote confirmation emails
+
+Configure these server-side environment variables (see `.env.example`):
+
+- `RESEND_API_KEY`: a sending-only key; keep this out of public runtime config.
+- `NUXT_RESEND_FROM_EMAIL`: the sender customers see.
+- `NUXT_RESEND_QUOTE_TEMPLATE_ID`: the published Resend template ID.
+- `NUXT_QUOTE_EMAIL_ENABLED=true`: enables queueing emails for new requests.
+
+The current setup uses `Indigenous <onboarding@resend.dev>` for testing. Resend
+allows this sender to deliver only to the account owner's email or its simulated
+test addresses, such as `delivered@resend.dev`. Customer delivery requires a domain
+you own and verify in Resend. Then replace the sender and preferably create a
+sending-only key restricted to that domain. No emails are redirected to a test
+inbox: the recipient is always the creator's submitted address.
+
+The hosted template is **Indigenous quote confirmation**, alias
+`indigenous-quote-confirmation`. It requires exactly these string variables:
+`CUSTOMER_NAME`, `REFERENCE`, `ITEMS_HTML`, `ITEMS_NOTE`, and
+`CONFIRMATION_PHONE_HTML`. The phone uses `HOMEPAGE_CONTENT.phone`, shared with
+the website; valid numbers become tap-to-call links and placeholders remain text.
+The phone variable has a fallback for jobs queued before this variable existed.
+Edit and publish its
+copy in Resend. Item previews escape HTML; lists that exceed Resend's 2,000-character
+variable limit include the full saved names, SKUs, and quantities in a UTF-8 text
+attachment. The message confirms receipt of a request, with pricing and availability
+confirmed separately.
+
+An email job is saved atomically with each new quote in
+`quote_confirmation_emails`. Retries of the quote request reuse the saved quote
+and job. The request starts delivery with Nitro's `event.waitUntil`; the
+`quote-emails` Nitro task also processes pending jobs every minute on the Node
+server preset. The server must remain running for scheduled retries. For other
+deployment targets, configure a supported scheduler to run this task.
+
+Email API requests time out after 10 seconds. Temporary failures (network errors,
+429, and 5xx) retry with backoff and respect `Retry-After`; other provider errors
+are marked `failed` for review. Email failures do not discard the quote or change
+its confirmation response. Jobs store a fixed payload and use
+`quote-confirmation/<internal quote ID>` as their provider idempotency key. After
+23 hours from the first attempt, unsent jobs become `review`, so retries do not
+silently outlive Resend's 24-hour duplicate protection. Check the provider's email
+log before manually retrying any failed or review job. `sent` means accepted by
+Resend; final delivery can be checked in its dashboard.
+
+The queue migration does not send confirmations for historical requests.
 
 Before running this version against a database, generate the client and apply the
 migrations using the configured `DIRECT_URL`:
