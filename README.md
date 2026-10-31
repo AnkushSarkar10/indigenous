@@ -2,6 +2,50 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Admin request inbox
+
+Open `/admin` to view quote requests. Access requires the shared team email and
+password. There is no public registration, password-reset flow, or login-attempt
+limit. Admin pages and APIs are private, uncached and excluded from indexing;
+every admin read requires a valid server-verified session.
+
+Set the credentials locally in an interactive terminal:
+
+```bash
+pnpm admin:setup
+```
+
+The command asks for the shared email and a password of at least 12 characters,
+with hidden password input and confirmation. It preserves unrelated `.env`
+settings and writes only the email, a salted scrypt password hash, and a random
+session secret. No plaintext password is saved. Restart the app after setup.
+Run the command again to change the login; changing the email, hash or secret
+invalidates previously issued sessions.
+
+For hosting, configure `NUXT_ADMIN_EMAIL`, `NUXT_ADMIN_PASSWORD_HASH`, and
+`NUXT_ADMIN_SESSION_SECRET` as private server environment variables, using the
+values produced in `.env` by the setup command. Production must use HTTPS;
+the session cookie is Secure in production, HTTP-only and SameSite=Strict.
+Behind a reverse proxy, preserve the public Host and set X-Forwarded-Proto to
+`https` so same-origin login and logout checks see the correct public origin.
+Sessions expire after eight hours. Logout removes the current browser's cookie;
+rotating credentials invalidates all sessions. Missing configuration disables
+admin login rather than enabling any default account.
+
+The inbox shows 25 requests per page, newest first by default, with an oldest-first
+option. Search accepts full or partial customer-facing Request IDs such as
+`IND-323`, ignores case and surrounding spaces, and searches all saved requests.
+Sorting and filtering happen in the database. Dates are displayed in IST.
+The inbox checks for updates every five seconds while the tab is visible and
+online, preserving the current search, sort order, and page. Returning to the tab
+or reconnecting triggers an immediate check. Updates keep the existing rows
+visible without a loading flash; temporary connection failures retry automatically.
+Polling stops when leaving the inbox, and an expired session returns to sign-in.
+Open a request to see customer contact details, address, notes and the product
+name/SKU/quantity snapshots saved with the original submission. The inbox is
+read-only; it does not edit requests or send emails. No database migration is
+needed for admin access.
+
 ## Setup
 
 Make sure to install dependencies:
