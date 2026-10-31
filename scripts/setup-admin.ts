@@ -1,9 +1,10 @@
 import { randomBytes } from "node:crypto";
-import { chmod, readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { emitKeypressEvents, type Key } from "node:readline";
 import { resolve } from "node:path";
 import { hashAdminPassword } from "../server/utils/admin-password";
+import { writeEnvAtomically } from "./utils/write-env";
 
 function passwordPrompt(prompt: string): Promise<string> {
   return new Promise((resolvePassword, reject) => {
@@ -56,8 +57,7 @@ async function main() {
     if (pattern.test(contents)) contents = contents.replace(pattern, line);
     else contents = `${contents}${contents.endsWith("\n") || !contents ? "" : "\n"}${line}\n`;
   }
-  await writeFile(envPath, contents, { mode: 0o600 });
-  await chmod(envPath, 0o600);
+  await writeEnvAtomically(envPath, contents);
   console.log("Admin credentials saved to .env. Restart the app, then open /admin. For hosting, copy the three NUXT_ADMIN_* settings into the server environment.");
 }
 
