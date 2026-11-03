@@ -3,6 +3,9 @@ import { adminSession, adminSettings, ADMIN_SESSION_SECONDS, requireAdminOrigin 
 import { verifyAdminPassword } from "../../utils/admin-password";
 import { readLimitedQuoteBody } from "../../utils/quote-request-limits";
 
+const MAX_CONCURRENT_VERIFICATIONS = 2;
+let activeVerifications = 0;
+
 export default defineEventHandler(async (event) => {
   requireAdminOrigin(event);
   const settings = adminSettings(event);
@@ -18,8 +21,17 @@ export default defineEventHandler(async (event) => {
     || body.email.length > 254 || !body.password || Buffer.byteLength(body.password) > 1024) {
     throw createError({ statusCode: 400, statusMessage: "Please enter your email and password." });
   }
-  // Verify the password even for an incorrect email. Login attempts are unlimited.
-  const validPassword = await verifyAdminPassword(body.password, settings.passwordHash);
+  if (activeVerifications >= MAX_CONCURRENT_VERIFICATIONS) {
+    throw createError({ statusCode: 503, statusMessage: "Sign-in is busy. Please try again shortly." });
+  }
+  // Verify the password even for an incorrect email.
+  activeVerifications++;
+  let validPassword: boolean;
+  try {
+    validPassword = await verifyAdminPassword(body.password, settings.passwordHash);
+  } finally {
+    activeVerifications--;
+  }
   if (!validPassword || body.email.trim().toLowerCase() !== settings.email) {
     throw createError({ statusCode: 401, statusMessage: "Incorrect email or password." });
   }

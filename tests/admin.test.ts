@@ -78,6 +78,13 @@ function read(path: string, authenticated = true) {
   return fetch(`${origin}${path}`, { headers: authenticated ? { cookie } : {} });
 }
 
+test("login rejects excess concurrent password checks and accepts retries when capacity frees up", async () => {
+  const invalidCredentials = { email: settings.adminEmail, password: "wrong password" };
+  const responses = await Promise.all([signIn(), signIn(invalidCredentials), signIn()]);
+  assert.deepEqual(responses.map((response) => response.status), [200, 401, 503]);
+  assert.equal((await signIn()).status, 200);
+});
+
 test("passwords are salted and verified without trimming, and malformed hashes fail safely", async () => {
   assert.ok(isAdminPasswordHash(passwordHash));
   assert.ok(await verifyAdminPassword(password, passwordHash));

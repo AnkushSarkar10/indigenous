@@ -47,14 +47,14 @@ async function main() {
   if (await passwordPrompt("Confirm password (hidden): ") !== password) throw new Error("Passwords did not match. No settings were changed.");
 
   const settings = {
-    NUXT_ADMIN_EMAIL: email,
+    NUXT_ADMIN_EMAIL: `"${email}"`,
     NUXT_ADMIN_PASSWORD_HASH: await hashAdminPassword(password),
     NUXT_ADMIN_SESSION_SECRET: randomBytes(48).toString("hex"),
   };
   for (const [key, value] of Object.entries(settings)) {
     const pattern = new RegExp(`^\\s*${key}\\s*=.*$`, "gm");
     const line = `${key}=${value}`;
-    if (pattern.test(contents)) contents = contents.replace(pattern, line);
+    if (pattern.test(contents)) contents = contents.replace(pattern, () => line);
     else contents = `${contents}${contents.endsWith("\n") || !contents ? "" : "\n"}${line}\n`;
   }
   await writeEnvAtomically(envPath, contents);
